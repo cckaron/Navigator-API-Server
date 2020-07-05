@@ -4,21 +4,24 @@ from flask import render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
+from config import AwsConfig as config
+
 # Create the application instance
-app = connexion.App(__name__, specification_dir='./')
+app = connexion.App(__name__, specification_dir=config.CONNEXION_DIR)
 
 # Read the swagger.yml file to configure the endpoints
-app.add_api('swagger.yaml', arguments={'title': 'Navigator Sharing Data'}, pythonic_params=True)
+app.add_api(config.CONNEXION_YAML, pythonic_params=True)
 
 #specify db config
-application = app.app
-application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-application.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://admin:F9SxsrFLQyzqNUYE@wayfic-db.cwuvvmo96hjw.ap-northeast-1.rds.amazonaws.com:3306/information_schema"
+flaskApp = app.app
+flaskApp.config.from_object(config())
 
 #SQLAlchemy
-db = SQLAlchemy(application)
+db = SQLAlchemy(flaskApp)
 #Migration tool
-migrate = Migrate(application, db)
+migrate = Migrate(flaskApp, db)
+
+
 
 # Create a URL route in our application for "/"
 @app.route('/')
@@ -34,15 +37,13 @@ def home():
 #testing
 @app.route('/test')
 def index():
-
+    print(getattr(config, 'SQLALCHEMY_DATABASE_URI'))
     sql_cmd = """
         select *
-        from CHARACTER_SETS
+        from user
         """
-
     query_data = db.engine.execute(sql_cmd)
-    print(query_data)
     return 'ok'
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080, debug=True)
+    app.run(host=config.HOST, port=config.PORT, debug=config.DEBUG)    
