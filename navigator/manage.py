@@ -1,3 +1,4 @@
+import enum
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_script import Manager
@@ -16,13 +17,34 @@ db.create_all()
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
 
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(500))
+class MyEnum(enum.Enum):
+    Departure = 1
+    Destination = 2
+    Record = 3
 
-class Student(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(300))
+class Tasks(db.Model):
+    __tablename__ = 'tasks'
+    id = db.Column(db.String(128), primary_key=True)
+    created_at = db.Column(db.DateTime, nullable=False)
+
+class Position(db.Model):
+    __tablename__ = 'positions'
+    uid = db.Column(db.String(128))
+    task_id = db.Column(db.String(128), db.ForeignKey("tasks.id"), primary_key=True)
+    created_at = db.Column(db.DateTime, primary_key=True)
+    type = db.Column(db.Enum(MyEnum), primary_key=True)
+    generated_at = db.Column(db.DateTime)
+    latitude = db.Column(db.Float, nullable=False)
+    longitude = db.Column(db.Float, nullable=False)
+    sequence = db.Column(db.Integer, nullable=False)
+
+class Track(db.Model):
+    __tablename__ = 'tracks'
+    uid = db.Column(db.String(128))
+    created_at = db.Column(db.DateTime, primary_key=True)
+    task_id = db.Column(db.String(128), db.ForeignKey("tasks.id"), primary_key=True)
+    generated_at = db.Column(db.DateTime)
+    content = db.Column(db.Text)
 
 if __name__ == '__main__':
     manager.run()
