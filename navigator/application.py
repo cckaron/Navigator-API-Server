@@ -7,13 +7,13 @@ from flask_migrate import Migrate
 from config import AwsConfig as config
 
 # Create the application instance
-app = connexion.App(__name__, specification_dir=config.CONNEXION_DIR)
+application = connexion.App(__name__, specification_dir=config.CONNEXION_DIR)
 
 # Read the swagger.yml file to configure the endpoints
-app.add_api(config.CONNEXION_YAML, pythonic_params=True)
+application.add_api(config.CONNEXION_YAML, pythonic_params=True)
 
 #specify db config
-flaskApp = app.app
+flaskApp = application.app
 flaskApp.config.from_object(config())
 
 #SQLAlchemy
@@ -24,7 +24,7 @@ migrate = Migrate(flaskApp, db)
 
 
 # Create a URL route in our application for "/"
-@app.route('/')
+@application.route('/')
 def home():
     """
     This function just responds to the browser ULR
@@ -35,15 +35,15 @@ def home():
     return render_template('index.html')   
 
 #testing
-@app.route('/test')
+@application.route('/test')
 def index():
     print(getattr(config, 'SQLALCHEMY_DATABASE_URI'))
     sql_cmd = """
         select *
-        from user
+        from tasks
         """
     query_data = db.engine.execute(sql_cmd)
     return 'ok'
 
 if __name__ == '__main__':
-    app.run(host=config.HOST, port=config.PORT, debug=config.DEBUG)    
+    application.run(host=config.HOST, port=config.PORT, debug=config.DEBUG)    

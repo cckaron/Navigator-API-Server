@@ -1,7 +1,4 @@
-/.DS_Store
-*.code-workspace
-**/__pycache__/*
-config.py
+
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
