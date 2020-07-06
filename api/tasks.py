@@ -1,4 +1,11 @@
-def addTask(body, task_id):  
+from .models.position import Position
+from .models.task import Task
+from .models.connection import connection
+from datetime import datetime
+
+db = connection.db
+
+def addTask(body):  
     """Create a new Task
 
     :param body: 
@@ -11,8 +18,17 @@ def addTask(body, task_id):
     
     # if connexion.request.is_json:
     #     body = Task.from_dict(connexion.request.get_json())  
-    return 'do some magic!'
+    task = Task(datetime.now())
+    task.add()
 
+    accident = Position(task.id, datetime.now(), 'Destination', '', body['accident_latitude'], body['accident_longitude'], 1)
+    departure = Position(task.id, datetime.now(), 'Departure', '', body['departure_latitude'], body['departure_longitude'], 0)
+    destination = Position(task.id, datetime.now(), 'Destination', '', body['hospital_latitude'], body['hospital_longitude'], 2)
+    p = [accident, departure, destination]
+    db.session.add_all(p)
+    db.session.commit()
+
+    return {"taskId":task.id}
 
 def findTask(task_id):  
     """Finds task by id
@@ -22,4 +38,8 @@ def findTask(task_id):
 
     :rtype: Task
     """
-    return 'do some magic!'
+    task = Task.find(task_id)
+    position = Position.find(task_id)  
+    print(task)
+    print(position)
+    return "yes"

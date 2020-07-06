@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 054795a042c1
+Revision ID: b59d733dde88
 Revises: 
-Create Date: 2020-07-05 19:33:53.322955
+Create Date: 2020-07-06 15:53:44.139335
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '054795a042c1'
+revision = 'b59d733dde88'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -24,19 +24,19 @@ def upgrade():
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('positions',
-    sa.Column('uid', sa.String(length=128), nullable=True),
+    sa.Column('uuid', sa.String(length=128), nullable=True),
     sa.Column('task_id', sa.String(length=128), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.Column('type', sa.Enum('Departure', 'Destination', 'Record', name='myenum'), nullable=False),
+    sa.Column('sequence', sa.Integer(), nullable=False),
     sa.Column('generated_at', sa.DateTime(), nullable=True),
     sa.Column('latitude', sa.Float(), nullable=False),
     sa.Column('longitude', sa.Float(), nullable=False),
-    sa.Column('sequence', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['task_id'], ['tasks.id'], ),
-    sa.PrimaryKeyConstraint('task_id', 'created_at', 'type')
+    sa.PrimaryKeyConstraint('task_id', 'created_at', 'type', 'sequence')
     )
     op.create_table('tracks',
-    sa.Column('uid', sa.String(length=128), nullable=True),
+    sa.Column('uuid', sa.String(length=128), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.Column('task_id', sa.String(length=128), nullable=False),
     sa.Column('generated_at', sa.DateTime(), nullable=True),
