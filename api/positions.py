@@ -1,3 +1,7 @@
+from models.position import Position, db
+from sqlalchemy import desc
+from datetime import datetime
+
 def addPosition(body, task_id):  
     """Add a new point record to the database
 
@@ -11,7 +15,10 @@ def addPosition(body, task_id):
 
     # if connexion.request.is_json:
     #     body = Point.from_dict(connexion.request.get_json()) 
-    return 'do some magic!'
+    position = Position('test', task_id, datetime.now(), 'Record', body['createdTime'], body['latitude'], body['longitude'], -1)
+    db.session.add(position)
+    db.session.commit()
+    #return 'do some magic!'
 
 
 def findLatestPosition(task_id):
@@ -22,4 +29,16 @@ def findLatestPosition(task_id):
 
     :rtype: Point
     """
-    return 'do some magic!'
+    query = Position.query.filter(Position.task_id==task_id).order_by(desc(Position.created_at)).first()
+    
+    #print(query.created_at)
+    #print(query.latitude)
+    #print(query.longitude)
+
+    return {'createdTime':query.created_at, 'latitude':query.latitude, 'longitude':query.longitude}
+
+if __name__ == "__main__":
+    body = {'createdTime':datetime.now(), 'latitude':74, 'longitude':16}
+    addPosition(body, '1')
+    a = findLatestPosition(task_id='1')
+    print(a)

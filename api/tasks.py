@@ -1,3 +1,7 @@
+#from models.task import Tasks, db
+from models.position import Position, Tasks, db
+from datetime import datetime
+
 def addTask(body, task_id):  
     """Create a new Task
 
@@ -10,8 +14,17 @@ def addTask(body, task_id):
     """
     
     # if connexion.request.is_json:
-    #     body = Task.from_dict(connexion.request.get_json())  
-    return 'do some magic!'
+    #     body = Task.from_dict(connexion.request.get_json())
+    task = Tasks(task_id, datetime.now())
+    db.session.add(task)
+    db.session.commit()
+    accident = Position('accident', task_id, datetime.now(), 'Destination', '', body['accident_latitude'], body['accident_longitude'], 1)
+    departure = Position('departure', task_id, datetime.now(), 'Departure', '', body['departure_latitude'], body['departure_longitude'], 0)
+    destination = Position('destination', task_id, datetime.now(), 'Destination', '', body['hospital_latitude'], body['hospital_longitude'], 2)
+    p = [accident, departure, destination]
+    db.session.add_all(p)
+    db.session.commit()
+    #return 'do some magic!'
 
 
 def findTask(task_id):  
@@ -22,4 +35,19 @@ def findTask(task_id):
 
     :rtype: Task
     """
-    return 'do some magic!'
+    task_query = Tasks.query.filter(Tasks.id==task_id)
+    position_query = Position.query.filter(Position.task_id==task_id).order_by(Position.uid in ['accident','departure','destination'])
+    print(task_query)
+    print(position_query)
+
+if __name__=='__main__':
+    body = {
+        "accident_latitude": 12,
+        "accident_longitude": 46,
+        "departure_latitude": 38,
+        "departure_longitude": 27,
+        "hospital_latitude": 3,
+        "hospital_longitude": 18,
+        "id": "4"
+        }
+    addTask(body,body['id'])
