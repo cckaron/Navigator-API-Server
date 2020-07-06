@@ -51,14 +51,7 @@ def findTask(task_id):
     :rtype: Task
     """
     positions = Position.findDepartureAndDestination(task_id)
-    dic = {
-        "accident_latitude": 0,
-        "accident_longitude": 0,
-        "departure_latitude": 0,
-        "departure_longitude": 0,
-        "hospital_latitude": 0,
-        "hospital_longitude": 0
-    }
+    dic = {}
     for position in positions:
         if position.type.value == TypeEnum.Departure.value:
             d = {
