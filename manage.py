@@ -37,6 +37,7 @@ class Position(db.Model):
     generated_at = db.Column(db.DateTime)
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
+    estimatedArriveTime = db.Column(db.Float)
 
 class Track(db.Model):
     __tablename__ = 'tracks'

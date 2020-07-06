@@ -1,3 +1,9 @@
+from .models.track import Track
+from .models.connection import connection
+from datetime import datetime
+
+db = connection.db
+
 def addTrack(body, task_id):  
     """Add a new track record to the database
 
@@ -10,7 +16,10 @@ def addTrack(body, task_id):
     """
     # if connexion.request.is_json:
     #     body = Track.from_dict(connexion.request.get_json()) 
-    return 'do some magic!'
+    track = Track(datetime.now(), task_id, None, body['content'])
+    track.add()
+
+    return 'Success'
 
 
 def findLatestTrack(task_id): 
@@ -21,4 +30,15 @@ def findLatestTrack(task_id):
 
     :rtype: Track
     """
-    return 'do some magic!'
+    track = Track.findLatest(task_id)
+    if track is None:
+        return "No Record"
+
+    print(track.__dict__)    
+    dic = {
+        "createdTime": track.created_at,
+        "content": track.content,
+    }
+
+    return dic
+

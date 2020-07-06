@@ -1,3 +1,9 @@
+from .models.position import Position, TypeEnum
+from .models.connection import connection
+from datetime import datetime
+
+db = connection.db
+
 def addPosition(body, task_id):  
     """Add a new point record to the database
 
@@ -9,9 +15,14 @@ def addPosition(body, task_id):
     :rtype: None
     """
 
-    # if connexion.request.is_json:
-    #     body = Point.from_dict(connexion.request.get_json()) 
-    return 'do some magic!'
+    record = Position(
+        task_id=task_id, created_at=datetime.now(), 
+        type=TypeEnum.Record, generated_at=None, 
+        latitude=body['latitude'], longitude=body['longitude'], 
+        sequence=2, estimatedArriveTime=body['estimatedArriveTime'])
+    record.add()
+
+    return 'Success'
 
 
 def findLatestPosition(task_id):
@@ -22,4 +33,15 @@ def findLatestPosition(task_id):
 
     :rtype: Point
     """
-    return 'do some magic!'
+    position = Position.findLatest(task_id)
+    if position is None:
+        return "No Record"
+
+    dic = {
+        "createdTime": position.created_at,
+        "langitude": position.latitude,
+        "longitude": position.longitude,
+        "estimatedArrivetime": position.estimatedArriveTime,
+    }
+
+    return dic

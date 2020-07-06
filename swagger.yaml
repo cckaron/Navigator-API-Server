@@ -226,7 +226,11 @@ components:
         createdTime:
           type: string
           description: EpocTime. ex. 1593525939 would be 2020-06-30T14:04:16+00:00
-          example: 1593525939
+          example: "1593525939"
+        estimatedArriveTime:
+          type: number
+          description: Estimated arriving time. ex. value 10.0 presents 10 minutes
+          example: 10
         latitude:
           type: number
         longitude:
@@ -243,6 +247,7 @@ components:
         #   type: "string"
       required:
         - createdTime
+        - estimatedArriveTime
         - latitude
         - longitude
     Track:

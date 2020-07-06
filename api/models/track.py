@@ -1,16 +1,8 @@
 import uuid
 from .connection import connection
+from sqlalchemy import or_, desc
 
 db = connection.db
-
-class Tasks(db.Model):
-    __tablename__ = 'tasks'
-    id = db.Column(db.String(128), primary_key=True)
-    created_at = db.Column(db.DateTime, nullable=False)
-
-    def __init__(self, id, created_at):
-        self.id = id
-        self.created_at = created_at
 
 class Track(db.Model):
     __tablename__ = 'tracks'
@@ -26,3 +18,15 @@ class Track(db.Model):
         self.task_id = task_id
         self.generated_at = generated_at
         self.content = content
+    
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+        return self
+    
+    @classmethod
+    def findLatest(cls, task_id):
+        return cls.query.\
+            filter_by(task_id=task_id).\
+            order_by(desc(cls.created_at)).\
+            first()

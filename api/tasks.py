@@ -1,4 +1,4 @@
-from .models.position import Position
+from .models.position import Position, TypeEnum
 from .models.task import Task
 from .models.connection import connection
 from datetime import datetime
@@ -21,9 +21,21 @@ def addTask(body):
     task = Task(datetime.now())
     task.add()
 
-    accident = Position(task.id, datetime.now(), 'Destination', '', body['accident_latitude'], body['accident_longitude'], 1)
-    departure = Position(task.id, datetime.now(), 'Departure', '', body['departure_latitude'], body['departure_longitude'], 0)
-    destination = Position(task.id, datetime.now(), 'Destination', '', body['hospital_latitude'], body['hospital_longitude'], 2)
+    accident = Position(
+        task_id=task.id, created_at=datetime.now(), 
+        type=TypeEnum.Destination, generated_at=None,
+        latitude=body['accident_latitude'], longitude=body['accident_longitude'], 
+        sequence=1)
+    departure = Position(
+        task_id=task.id, created_at=datetime.now(), 
+        type=TypeEnum.Departure, generated_at=None, 
+        latitude=body['departure_latitude'], longitude=body['departure_longitude'], 
+        sequence=0)
+    destination = Position(
+        task_id=task.id, created_at=datetime.now(), 
+        type=TypeEnum.Destination, generated_at=None, 
+        latitude=body['hospital_latitude'], longitude=body['hospital_longitude'], 
+        sequence=2)
     p = [accident, departure, destination]
     db.session.add_all(p)
     db.session.commit()
@@ -38,8 +50,35 @@ def findTask(task_id):
 
     :rtype: Task
     """
-    task = Task.find(task_id)
-    position = Position.find(task_id)  
-    print(task)
-    print(position)
-    return "yes"
+    positions = Position.findDepartureAndDestination(task_id)
+    dic = {
+        "accident_latitude": 0,
+        "accident_longitude": 0,
+        "departure_latitude": 0,
+        "departure_longitude": 0,
+        "hospital_latitude": 0,
+        "hospital_longitude": 0
+    }
+    for position in positions:
+        if position.type.value == TypeEnum.Departure.value:
+            d = {
+                'departure_latitude': position.latitude,
+                'departure_longitude': position.longitude
+            }
+            dic.update(d)
+        elif position.type.value == TypeEnum.Destination.value:
+            if position.sequence == 1:
+                d = {
+                    'accident_latitude': position.latitude,
+                    'accident_longitude': position.longitude
+                }
+                dic.update(d)
+
+            elif position.sequence == 2:
+                d = {
+                    'hospital_latitude': position.latitude,
+                    'hospital_longitude': position.longitude
+                }
+                dic.update(d)
+            
+    return dic
