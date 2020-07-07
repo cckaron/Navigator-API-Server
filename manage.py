@@ -33,14 +33,15 @@ class Tasks(db.Model):
 
 class Position(db.Model):
     __tablename__ = 'positions'
-    uid = db.Column(db.String(128))
+    uuid = db.Column(db.String(128))
     task_id = db.Column(db.String(128), db.ForeignKey("tasks.id"), primary_key=True)
     created_at = db.Column(db.DateTime, primary_key=True)
     type = db.Column(db.Enum(MyEnum), primary_key=True)
+    sequence = db.Column(db.Integer, primary_key=True, default=0)
     generated_at = db.Column(db.DateTime)
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
-    sequence = db.Column(db.Integer, nullable=False)
+    estimatedArriveTime = db.Column(db.Float)
 
     '''def __init__(self, uid, task_id, created_at, type, generated_at, latitude, longitude, sequence):
         self.uid = uid
@@ -54,7 +55,7 @@ class Position(db.Model):
 
 class Track(db.Model):
     __tablename__ = 'tracks'
-    uid = db.Column(db.String(128))
+    uuid = db.Column(db.String(128))
     created_at = db.Column(db.DateTime, primary_key=True)
     task_id = db.Column(db.String(128), db.ForeignKey("tasks.id"), primary_key=True)
     generated_at = db.Column(db.DateTime)
