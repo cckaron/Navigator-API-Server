@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>勤務中心</title>
+</head>
+<body>
+    <div id = 'page_title' style="text-align: center; font-size: 40px;font-weight:bold">
+        勤務中心案件登錄系統
+    </div>
+    <div id='input' style="text-align: center;">
+        <table style="margin-left: auto; margin-right: auto; text-align: center; font-size: 18px;">
+            <tr id="myTable" valign="baseline">
+                <td  colspan="2" style="text-align: right;">報案人電話：<input name="user" type="user" class="textfield"  onMouseOver="this.style.backgroundColor='#FFFFFF';this.style.borderColor= '#CCCCCC';" onMouseOut="this.style.borderColor= '#CCCCCC';"/></td>
+            </tr>
+            <tr id="myTable1" valign="baseline">
+                <td  colspan="2" style="text-align: right;">消防局：<input name="dep" type="departure" class="textfield"  onMouseOver="this.style.backgroundColor='#FFFFFF';this.style.borderColor= '#CCCCCC';" onMouseOut="this.style.borderColor= '#CCCCCC';"/></td>
+            </tr>
+            <tr id="myTable2" valign="baseline">
+                <td  colspan="2" style="text-align: right;">事故地點：<input name="acc" type="accident" class="textfield" onMouseOver="this.style.backgroundColor='#FFFFFF';this.style.borderColor= '#CCCCCC';" onMouseOut="this.style.borderColor= '#CCCCCC';" /></td>
+            </tr>
+            <tr id="myTable3" valign="baseline">
+                <td colspan="2" style="text-align: right;">送往醫院：<input name="hos" type="hospital" class="textfield" onMouseOver="this.style.backgroundColor='#FFFFFF';this.style.borderColor= '#CCCCCC';" onMouseOut="this.style.borderColor= '#CCCCCC';" /></td>    
+            </tr>
+            <tr valign="baseline">
+                <td width="50"></td>
+                <td valign="top"><input type="submit" name="Submit" onClick="alert('已發送資料');window.location.reload()" value="發送" onMouseOver="this.style.backgroundColor='#FFFFFF'; this.style.color= '#333333';this.style.fontWeight= 'bold';" onMouseOut="this.style.color= '#666666';this.style.fontWeight= 'normal';" /></td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

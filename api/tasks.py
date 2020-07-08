@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-#from models.task import Tasks, db
-from models.position import Position, Tasks, db
-from datetime import datetime
-
-def addTask(body, task_id):  
-=======
 from .models.position import Position, TypeEnum
 from .models.task import Task
 from .models.connection import connection
@@ -13,7 +6,6 @@ from datetime import datetime
 db = connection.db
 
 def addTask(body):  
->>>>>>> bf886af9a672e8ba6b62523211f17f33691d47c5
     """Create a new Task
 
     :param body: 
@@ -25,23 +17,9 @@ def addTask(body):
     """
     
     # if connexion.request.is_json:
-<<<<<<< HEAD
-    #     body = Task.from_dict(connexion.request.get_json())
-    task = Tasks(task_id, datetime.now())
-    db.session.add(task)
-    db.session.commit()
-    accident = Position('accident', task_id, datetime.now(), 'Destination', '', body['accident_latitude'], body['accident_longitude'], 1)
-    departure = Position('departure', task_id, datetime.now(), 'Departure', '', body['departure_latitude'], body['departure_longitude'], 0)
-    destination = Position('destination', task_id, datetime.now(), 'Destination', '', body['hospital_latitude'], body['hospital_longitude'], 2)
-    p = [accident, departure, destination]
-    db.session.add_all(p)
-    db.session.commit()
-    #return 'do some magic!'
-=======
     #     body = Task.from_dict(connexion.request.get_json())  
     task = Task(datetime.now())
     task.add()
->>>>>>> bf886af9a672e8ba6b62523211f17f33691d47c5
 
     accident = Position(
         task_id=task.id, created_at=datetime.now(), 
@@ -72,24 +50,6 @@ def findTask(task_id):
 
     :rtype: Task
     """
-<<<<<<< HEAD
-    task_query = Tasks.query.filter(Tasks.id==task_id)
-    position_query = Position.query.filter(Position.task_id==task_id).order_by(Position.uid in ['accident','departure','destination'])
-    print(task_query)
-    print(position_query)
-
-if __name__=='__main__':
-    body = {
-        "accident_latitude": 12,
-        "accident_longitude": 46,
-        "departure_latitude": 38,
-        "departure_longitude": 27,
-        "hospital_latitude": 3,
-        "hospital_longitude": 18,
-        "id": "4"
-        }
-    addTask(body,body['id'])
-=======
     positions = Position.findDepartureAndDestination(task_id)
     dic = {}
     for position in positions:
@@ -115,4 +75,3 @@ if __name__=='__main__':
                 dic.update(d)
             
     return dic
->>>>>>> bf886af9a672e8ba6b62523211f17f33691d47c5
