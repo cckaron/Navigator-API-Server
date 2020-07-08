@@ -62,15 +62,15 @@ def findTask(task_id):
     for position in positions:
         if position.type.value == TypeEnum.Departure.value:
             d = {
-                'departure_latitude': position.latitude,
-                'departure_longitude': position.longitude
+                'departure_latitude': round(position.latitude, 5),
+                'departure_longitude': round(position.longitude, 5)
             }
             dic.update(d)
         elif position.type.value == TypeEnum.Destination.value:
             if position.sequence == 1:
                 d = {
-                    'accident_latitude': position.latitude,
-                    'accident_longitude': position.longitude
+                    'accident_latitude': round(position.latitude, 5),
+                    'accident_longitude': round(position.longitude, 5)
                 }
                 dic.update(d)
 
@@ -81,3 +81,33 @@ def findTask(task_id):
                 }
                 dic.update(d)
     return dic
+
+def findAllTask():
+    tasks = Task.findall()
+    rtn = {}
+    for task in tasks:
+        positions = Position.findDepartureAndDestination(task.id)
+        dic = {}
+        for position in positions:
+            if position.type.value == TypeEnum.Departure.value:
+                d = {
+                    'departure_latitude': round(position.latitude, 5),
+                    'departure_longitude': round(position.longitude, 5)
+                }
+                dic.update(d)
+            elif position.type.value == TypeEnum.Destination.value:
+                if position.sequence == 1:
+                    d = {
+                        'accident_latitude': round(position.latitude, 5),
+                        'accident_longitude': round(position.longitude, 5)
+                    }
+                    dic.update(d)
+
+                elif position.sequence == 2:
+                    d = {
+                        'hospital_latitude': round(position.latitude, 5),
+                        'hospital_longitude': round(position.longitude, 5)
+                    }
+                    dic.update(d)  
+        rtn[task.id] = dic
+    return rtn

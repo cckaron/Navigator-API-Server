@@ -39,8 +39,8 @@ def findLatestPosition(task_id):
 
     dic = {
         "createdTime": position.created_at,
-        "latitude": position.latitude,
-        "longitude": position.longitude,
+        "latitude": round(position.latitude, 5),
+        "longitude": round(position.longitude, 5),
         "estimatedArrivetime": position.estimatedArriveTime,
     }
 

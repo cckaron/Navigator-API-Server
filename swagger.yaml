@@ -3,7 +3,7 @@ openapi: "3.0.0"
 info:
   title: Navigator Sharing Data
   description: Data collected by navigator
-  version: 0.1.2
+  version: 0.1.3
 
 
 servers:
@@ -69,7 +69,26 @@ paths:
           description: Invalid ID supplied
         '404':
           description: A task with the specified ID was not found.
-      
+  
+  /task/all:
+    get:
+      tags:
+      - Tasks
+      summary: Find all task
+      operationId: findAllTask
+      x-openapi-router-controller: api.tasks
+          
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfTasks'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: A task with the specified ID was not found.
           
   #Start position 
   /position/findLatest/{taskId}:
@@ -220,6 +239,27 @@ components:
         - accident_latitude
         - hospital_longitude
         - hospital_latitude
+    ArrayOfTasks:
+      additionalProperties:
+        type: string
+        description: taskId
+        properties:
+          departure_longitude:
+            type: number
+            description: start position
+          departure_latitude:
+            type: number
+            description: start position
+          accident_longitude:
+            type: number
+          accident_latitude:
+            type: number
+          hospital_longitude:
+            type: number
+          hospital_latitude:
+            type: number
+        
+        
     Position:
       properties:
         createdTime:

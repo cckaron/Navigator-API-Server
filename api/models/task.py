@@ -37,4 +37,15 @@ class Task(db.Model):
             raise 
         finally:
             db.session.close()
+    
+    @classmethod
+    def findall(cls):
+        try:
+            rtn = cls.query.all()
+            return rtn
+        except:
+            db.session.rollback()
+            raise 
+        finally:
+            db.session.close()
         

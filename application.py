@@ -26,13 +26,7 @@ migrate = Migrate(flaskApp, db)
 # Create a URL route in our application for "/"
 @application.route('/')
 def home():
-    """
-    This function just responds to the browser ULR
-    localhost:8080/
-    :return:        the rendered template 'index.html'
-    """
-    
-    return render_template('index.html')   
+    return render_template('input_page.html')   
 
 #testing
 @application.route('/test')
