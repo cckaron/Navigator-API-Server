@@ -21,7 +21,7 @@ def addPosition(body, task_id):
         latitude=body['latitude'], longitude=body['longitude'], 
         sequence=2, estimatedArriveTime=body['estimatedArriveTime'])
     record.add()
-
+    
     return 'Success'
 
 

@@ -49,7 +49,6 @@ paths:
     
   /task/:
     post:
-      deprecated: true
       tags:
         - Tasks
       summary: Create a new Task

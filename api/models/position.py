@@ -36,22 +36,45 @@ class Position(db.Model):
     
     def add(self):
         db.session.add(self)
-        db.session.commit()
-        return self
         
+        try:
+            db.session.commit()
+            return self
+        except:
+            db.session.rollback()
+            raise 
+        finally:
+            db.session.close()
+
     @classmethod
     def findDepartureAndDestination(cls, task_id):
-        return cls.query.\
+        try:
+            rtn = cls.query.\
             filter_by(task_id=task_id).\
             filter(or_(cls.type.like(TypeEnum.Departure), cls.type.like(TypeEnum.Destination))).\
             all()
-    
+            return rtn
+        except:
+            db.session.rollback()
+            raise
+        finally:
+            db.session.close()
+
     @classmethod
     def findLatest(cls, task_id):
-        return cls.query.\
-            filter_by(task_id=task_id, type=TypeEnum.Record).\
-            order_by(desc(cls.created_at)).\
-            first()
+        try:
+            rtn = cls.query.\
+                filter_by(task_id=task_id, type=TypeEnum.Record).\
+                order_by(desc(cls.created_at)).\
+                first()
+            return rtn
+        except:
+            db.session.rollback()
+            raise
+        finally:
+            db.session.close()
+        
+        
     
         
 

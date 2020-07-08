@@ -13,10 +13,28 @@ class Task(db.Model):
         self.created_at = created_at 
     
     def add(self):
+        s = db.session()
+        s.expire_on_commit = False
         db.session.add(self)
-        db.session.commit()
-        return self
+        
+        try:
+            db.session.commit()
+            return self
+        except:
+            db.session.rollback()
+            raise 
+        finally:
+            db.session.close()
+    
     
     @classmethod
     def find(cls, task_id):
-        return cls.query.filter_by(id=task_id).first()
+        try:
+            rtn = cls.query.filter_by(id=task_id).first()
+            return rtn
+        except:
+            db.session.rollback()
+            raise 
+        finally:
+            db.session.close()
+        

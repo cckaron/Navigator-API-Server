@@ -39,6 +39,6 @@ def findLatestTrack(task_id):
         "createdTime": track.created_at,
         "content": track.content,
     }
-
+    
     return dic
 

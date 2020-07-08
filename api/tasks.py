@@ -38,9 +38,16 @@ def addTask(body):
         sequence=2)
     p = [accident, departure, destination]
     db.session.add_all(p)
-    db.session.commit()
 
-    return {"taskId":task.id}
+    try:
+        db.session.commit()
+        return {"taskId":task.id}
+    except:
+        db.session.rollback()
+        raise
+    finally:
+        db.session.close()
+
 
 def findTask(task_id):  
     """Finds task by id
@@ -73,5 +80,4 @@ def findTask(task_id):
                     'hospital_longitude': position.longitude
                 }
                 dic.update(d)
-            
     return dic

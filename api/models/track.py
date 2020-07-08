@@ -20,13 +20,26 @@ class Track(db.Model):
         self.content = content
     
     def add(self):
-        db.session.add(self)
-        db.session.commit()
-        return self
+        try:
+            db.session.add(self)
+            db.session.commit()
+            return self
+        except:
+            db.session.rollback()
+            raise
+        finally:
+            db.session.close()
     
     @classmethod
     def findLatest(cls, task_id):
-        return cls.query.\
-            filter_by(task_id=task_id).\
-            order_by(desc(cls.created_at)).\
-            first()
+        try:
+            rtn = cls.query.\
+                filter_by(task_id=task_id).\
+                order_by(desc(cls.created_at)).\
+                first()
+            return rtn
+        except:
+            db.session.rollback()
+            raise
+        finally:
+            db.session.close()
