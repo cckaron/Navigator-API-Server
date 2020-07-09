@@ -16,7 +16,7 @@ def addTrack(body, task_id):
     """
     # if connexion.request.is_json:
     #     body = Track.from_dict(connexion.request.get_json()) 
-    track = Track(datetime.now(), task_id, None, body['content'])
+    track = Track(datetime.now(), task_id, None, body['content'], body['roadIds'])
     track.add()
 
     return 'Success'
@@ -38,7 +38,8 @@ def findLatestTrack(task_id):
     dic = {
         "createdTime": track.created_at,
         "content": track.content,
+        "roadIds": track.roadIds
     }
-    
+
     return dic
 

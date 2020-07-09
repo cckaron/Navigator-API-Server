@@ -1,7 +1,10 @@
 from .models.position import Position, TypeEnum
 from .models.task import Task
+from .models.track import Track
 from .models.connection import connection
 from datetime import datetime
+
+import json
 
 db = connection.db
 
@@ -84,30 +87,36 @@ def findTask(task_id):
 
 def findAllTask():
     tasks = Task.findall()
-    rtn = {}
+    rtn = []
     for task in tasks:
         positions = Position.findDepartureAndDestination(task.id)
-        dic = {}
+        
+        dic = {} #main dict
+        info = {} #subdict for position iteration
+        
+        #fetch position info
         for position in positions:
             if position.type.value == TypeEnum.Departure.value:
-                d = {
-                    'departure_latitude': round(position.latitude, 5),
-                    'departure_longitude': round(position.longitude, 5)
-                }
-                dic.update(d)
+                info['departure_latitude'] = round(position.latitude, 5)
+                info['departure_longitude'] = round(position.longitude, 5)
+                
             elif position.type.value == TypeEnum.Destination.value:
                 if position.sequence == 1:
-                    d = {
-                        'accident_latitude': round(position.latitude, 5),
-                        'accident_longitude': round(position.longitude, 5)
-                    }
-                    dic.update(d)
+                    info['accident_latitude'] = round(position.latitude, 5)
+                    info['accident_longitude'] = round(position.longitude, 5)
 
                 elif position.sequence == 2:
-                    d = {
-                        'hospital_latitude': round(position.latitude, 5),
-                        'hospital_longitude': round(position.longitude, 5)
-                    }
-                    dic.update(d)  
-        rtn[task.id] = dic
+                    info['hospital_latitude'] = round(position.latitude, 5)
+                    info['hospital_longitude'] =round(position.longitude, 5)
+        
+        #fetch track info
+        track = Track.findLatest(task.id)
+        info['roadIds'] = track.roadIds if track is not None else None
+
+        #put data from subdict into main dict
+        dic['Info'] = info
+        dic["ID"] = task.id
+        
+        #append main dict into return dict
+        rtn.append(dic)
     return rtn

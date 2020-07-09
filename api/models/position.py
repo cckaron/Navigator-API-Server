@@ -2,6 +2,8 @@ import uuid
 import enum
 from .connection import connection
 from sqlalchemy import or_, desc
+from sqlalchemy.dialects.mysql import DOUBLE
+
 
 db = connection.db
 
@@ -18,8 +20,8 @@ class Position(db.Model):
     type = db.Column(db.Enum(TypeEnum), primary_key=True)
     sequence = db.Column(db.Integer, nullable=False, primary_key=True)
     generated_at = db.Column(db.DateTime)
-    latitude = db.Column(db.Float, nullable=False)
-    longitude = db.Column(db.Float, nullable=False)
+    latitude = db.Column(DOUBLE(), nullable=False)
+    longitude = db.Column(DOUBLE(), nullable=False)
     estimatedArriveTime = db.Column(db.Float)
 
     def __init__(self, *args, **kwargs):

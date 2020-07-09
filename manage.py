@@ -1,8 +1,11 @@
 import enum
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.dialects.mysql import DOUBLE
+
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -35,8 +38,8 @@ class Position(db.Model):
     type = db.Column(db.Enum(MyEnum), primary_key=True)
     sequence = db.Column(db.Integer, primary_key=True, default=0)
     generated_at = db.Column(db.DateTime)
-    latitude = db.Column(db.Float, nullable=False)
-    longitude = db.Column(db.Float, nullable=False)
+    latitude = db.Column(DOUBLE(), nullable=False)
+    longitude = db.Column(DOUBLE(), nullable=False)
     estimatedArriveTime = db.Column(db.Float)
 
 class Track(db.Model):
@@ -46,6 +49,7 @@ class Track(db.Model):
     task_id = db.Column(db.String(128), db.ForeignKey("tasks.id"), primary_key=True)
     generated_at = db.Column(db.DateTime)
     content = db.Column(db.Text)
+    roadIds = db.Column(db.Text)
 
 if __name__ == '__main__':
     manager.run()
