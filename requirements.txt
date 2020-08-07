@@ -6,3 +6,7 @@ alembic == 1.4.2
 Flask-Migrate == 2.5.3
 Flask-Script == 2.0.6
 PyMySQL == 0.9.3
+googlemaps == 4.4.1
+kotsms == 0.1.2
+
+

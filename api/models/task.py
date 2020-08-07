@@ -1,5 +1,6 @@
 import uuid
 from .connection import connection
+from sqlalchemy import or_, desc
 
 db = connection.db
 
@@ -48,4 +49,16 @@ class Task(db.Model):
             raise 
         finally:
             db.session.close()
-        
+
+    @classmethod
+    def findLatest(cls):
+        try:
+            rtn = cls.query.\
+                order_by(desc(cls.created_at)).\
+                first()
+            return rtn
+        except:
+            db.session.rollback()
+            raise
+        finally:
+            db.session.close()

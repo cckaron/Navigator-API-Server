@@ -120,3 +120,7 @@ def findAllTask():
         #append main dict into return dict
         rtn.append(dic)
     return rtn
+
+def findLatest():
+    task = Task.findLatest()
+    return task
