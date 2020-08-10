@@ -1,0 +1,55 @@
+body{
+    background-image: url("emergency.png");
+    background-position: center;
+    background-size: cover;
+    background-repeat: repeat;
+}
+.card-block{
+    text-align: center;
+}
+.card-title{
+    text-align: center;
+    font-size: 40px;
+}
+.table.stylish-table{
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    width:45%;
+    
+}
+h4{
+    font-size: 24px;
+}
+td{
+    border-radius: 10px;
+}
+
+.col-head{
+    font-size: 35px;
+    text-align: center;
+}
+.round{
+    line-height:45px;
+    width: 45px;
+    height: 45px;
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    border-radius: 100%;
+    font-size: 30px;
+}
+
+.block{
+    font-size: 24px;
+    font-weight: bold;
+}
+.block.safe{
+    background-color: rgba(67, 236, 0, 0.9);
+}
+.block.warning{
+    background-color: rgba(255, 136, 0, 0.9);
+}
+.block.danger{
+    background-color: rgba(255, 8, 0, 0.9);
+}
