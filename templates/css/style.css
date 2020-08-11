@@ -11,20 +11,15 @@ body{
     text-align: center;
     font-size: 40px;
 }
-.table.stylish-table{
+.tableSorter{
     text-align: center;
     margin-left: auto;
     margin-right: auto;
     width:45%;
-    
 }
 h4{
     font-size: 24px;
 }
-td{
-    border-radius: 10px;
-}
-
 .col-head{
     font-size: 35px;
     text-align: center;
@@ -39,10 +34,19 @@ td{
     border-radius: 100%;
     font-size: 30px;
 }
-
+.text.safe{
+    color: rgba(67, 236, 0, 0.9);
+}
+.text.warning{
+    color: rgba(255, 136, 0, 0.9);
+}
+.text.danger{
+    color: rgba(255, 8, 0, 0.9);
+}
 .block{
     font-size: 24px;
     font-weight: bold;
+    border-radius: 10px;
 }
 .block.safe{
     background-color: rgba(67, 236, 0, 0.9);
@@ -52,4 +56,28 @@ td{
 }
 .block.danger{
     background-color: rgba(255, 8, 0, 0.9);
+}
+table.tableSorter th div.sortArrow {
+	width: 11px;
+	height: 6px;
+	display: inline-block;
+	margin-left: 5px;
+	vertical-align: 2px;
+	position: relative;
+}
+
+table.tableSorter th div.sortArrow div.sortArrowAscending,
+table.tableSorter th div.sortArrow div.sortArrowDescending {
+	position: absolute;
+	display: none;
+	width: 11px;
+	height: 6px;
+}
+
+table.tableSorter th div.sortArrow div.sortArrowAscending {
+	background: url('../Animated-Table-Sorting-Plugin-For-jQuery/arrow_asc.png');
+}
+
+table.tableSorter th div.sortArrow div.sortArrowDescending {
+	background: url('../Animated-Table-Sorting-Plugin-For-jQuery/arrow_desc.png') no-repeat;
 }
