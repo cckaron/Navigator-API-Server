@@ -6,11 +6,9 @@ from flask_migrate import Migrate
 
 from config import AwsConfig as config
 
-import urllib.request
-import urllib.parse
-from urllib.error import URLError
-
 from api import tasks
+from lib import sms
+from lib import googlemaps
 
 # Create the application instance
 application = connexion.App(__name__, specification_dir=config.CONNEXION_DIR)
@@ -32,40 +30,9 @@ migrate = Migrate(flaskApp, db)
 # Create a URL route in our application for "/"
 @application.route('/', methods=['GET', 'POST'])
 def home():
-    def SMS_publish(dstaddr, smbody):
-        data = {}
-        # data['username'] = 'cckaron28'
-        data['id'] = 'cckaron28'
-        data['password'] = 'Chaosin003'
-        data['longsms'] = 1
-        # data['dstaddr'] = dstaddr
-        data['tel'] = dstaddr
-        # data['smbody'] = smbody
-        data['msg'] = smbody
-       
-        url_values = urllib.parse.urlencode(data)
-        # url='https://api.kotsms.com.tw/kotsmsapi-1.php'
-        url = 'http://api.message.net.tw/send.php'
-        full_url = url + '?' + url_values
-
-        print(full_url)
-
-        try:
-            data = urllib.request.urlopen(full_url)
-            print(data.read())
-        except URLError as e:
-            if hasattr(e, 'reason'):
-                print('We failed to reach a server.')
-                print('Reason: ', e.reason)
-            elif hasattr(e, 'code'):
-                print('The server couldn\'t fulfill the request.')
-                print('Error code: ', e.code)
-
-    if request.method == 'POST':
-        import googlemaps
-        
+    if request.method == 'POST':        
         #Google Maps
-        gmaps = googlemaps.Client(key='AIzaSyBAHYSAVo_NiC6S6IMFx4-G7jSZI1GXyak')
+        gmaps = googlemaps.gmaps().client
         
         #addTask
         body = {}
@@ -115,12 +82,36 @@ def home():
 
 #testing
 @application.route('/test')
-def index():
+def test():
     task = tasks.findLatest()
     url = 'kwnaviking3d://navigation?taskId='+ task.id
     print(url)
     print(task.id)
     return redirect(url)
+
+#report
+@application.route('/report', methods=['GET', 'POST'])
+def report():
+    if request.method == 'POST':
+        gmaps = googlemaps.gmaps()
+        
+        #accident Point
+        accident = request.values['location']
+        location = gmaps.findLatAndLng(accident)
+        firestation = gmaps.findNearestTarget("消防", location)
+
+        return {
+            "accident_address": accident,
+            "firestation": firestation,
+            "accident_location": location
+        }
+
+    else:
+        return render_template('report.html')
+#spinner
+@application.route('/spinner')
+def spinner():
+    return render_template('spinner.html')
 
 if __name__ == '__main__':
     application.run(host=config.HOST, port=config.PORT, debug=config.DEBUG)    
