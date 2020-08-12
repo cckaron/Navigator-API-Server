@@ -155,7 +155,7 @@ Array - Specifc table
 			
 			// Set each row's height and width
 			$(table).find('tr').each(function() {
-				$(this).width($(this).outerWidth(true));
+				$(this).width("100%");
 				$(this).height($(this).outerHeight(true));
 			});
 			

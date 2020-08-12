@@ -47,6 +47,7 @@ h4{
     font-size: 24px;
     font-weight: bold;
     border-radius: 10px;
+    height: 95px;
 }
 .block.safe{
     background-color: rgba(67, 236, 0, 0.9);
