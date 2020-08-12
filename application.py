@@ -26,10 +26,8 @@ db = SQLAlchemy(flaskApp)
 migrate = Migrate(flaskApp, db)
 
 
-
-# Create a URL route in our application for "/"
-@application.route('/', methods=['GET', 'POST'])
-def home():
+@application.route('/old', methods=['GET', 'POST'])
+def old():
     if request.method == 'POST':        
         #Google Maps
         gmaps = googlemaps.gmaps().client
@@ -90,7 +88,7 @@ def test():
     return redirect(url)
 
 #report
-@application.route('/report', methods=['GET', 'POST'])
+@application.route('/', methods=['GET', 'POST'])
 def report():
     if request.method == 'POST':
         gmaps = googlemaps.gmaps()
