@@ -35,13 +35,13 @@ h4{
     font-size: 30px;
 }
 .text.safe{
-    color: rgba(67, 236, 0, 0.9);
+    color: #4CA067;
 }
 .text.warning{
-    color: rgba(255, 136, 0, 0.9);
+    color: #F8D366;
 }
 .text.danger{
-    color: rgba(255, 8, 0, 0.9);
+    color: #CB5545;
 }
 .block{
     font-size: 24px;
@@ -50,13 +50,13 @@ h4{
     height: 95px;
 }
 .block.safe{
-    background-color: rgba(67, 236, 0, 0.9);
+    background-color: #4CA067;
 }
 .block.warning{
-    background-color: rgba(255, 136, 0, 0.9);
+    background-color: #F8D366;
 }
 .block.danger{
-    background-color: rgba(255, 8, 0, 0.9);
+    background-color: #CB5545;
 }
 table.tableSorter th div.sortArrow {
 	width: 11px;

@@ -111,5 +111,9 @@ def report():
 def spinner():
     return render_template('spinner.html')
 
+#hospital
+@application.route('/hospital')
+def hospital():
+    return render_template('hospital_dashboard.html');
 if __name__ == '__main__':
     application.run(host=config.HOST, port=config.PORT, debug=config.DEBUG)    
