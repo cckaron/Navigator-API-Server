@@ -1,4 +1,7 @@
-# api-server
+# Navigator-API-Server
+2020 Presidential Hackathon - WayFic team
+
+This RestFUL api server is built for integrating with the navigator designed by KingWay Technology
 ## Install Guide
 > Under your python env (>3.7)
 Ensure you have requirement module
